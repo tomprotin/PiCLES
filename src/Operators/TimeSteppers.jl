@@ -229,7 +229,8 @@ function time_step!(model::Abstract2DModel, Δt::Float64; callbacks=nothing, deb
         
     elseif model.angular_spreading_type == "nonparametric"
 
-        # This next part needs to change
+        checkForObservations(model)
+        assimilate!(model, Δt)
 
         nPreviousParticles = 0
         model.ParticlePool = []
@@ -308,8 +309,6 @@ function time_step!(model::Abstract2DModel, Δt::Float64; callbacks=nothing, deb
             model.ParticleCollection[end-k+1].ODEIntegrator.u[6] = spreading
             #push!(model.ParticleCollection,InitParticleInstance(model.ODEsystem, z_init, model.ODEsettings, (i,j), false, true))
         end
-
-        assimilate!(model)
 
         #@info nPreviousParticles
         #@info length(model.ParticleCollection)

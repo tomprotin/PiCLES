@@ -1,6 +1,6 @@
 module custom_structures
 
-export ParticleInstance1D, ParticleInstance2D, MarkedParticleInstance, AbstractParticleInstance, AbstractMarkedParticleInstance, wni, DensityObservation
+export ParticleInstance1D, ParticleInstance2D, MarkedParticleInstance, AbstractParticleInstance, AbstractMarkedParticleInstance, wni, DensityObservation, ExtendedDensityObservation
 
 using DifferentialEquations: OrdinaryDiffEq.ODEIntegrator
 using DocStringExtensions
@@ -30,8 +30,25 @@ mutable struct DensityObservation <: AbstractObservation
         position_ij::Tuple{Int, Int}
         position_xy::Tuple{Float64, Float64}
         density::Function
+        densityMean::Vector{Float64}
+        densityCov::Matrix{Float64}
         on::Bool
         time::Float64
+        evaluateAssimilation::Bool
+        evaluateAssimilationAlphaRange::Vector{Float64}
+end
+
+mutable struct ExtendedDensityObservation <: AbstractObservation
+        positions_ij::Matrix{Integer}
+        mesh_weights::Vector{Float64}
+        position_xy::Tuple{Float64, Float64}
+        density::Function
+        densityMean::Vector{Float64}
+        densityCov::Matrix{Float64}
+        on::Bool
+        time::Float64
+        evaluateAssimilation::Bool
+        evaluateAssimilationAlphaRange::Vector{Float64}
 end
 
 # Debugging ParticleInstance
